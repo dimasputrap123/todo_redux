@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { remove_list } from "../redux/action/listAction";
+import { remove_list } from "../../redux/action/listAction";
 const List = (props) => {
   const history = useHistory();
   const handleClick = () => {

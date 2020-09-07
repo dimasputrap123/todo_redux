@@ -1,9 +1,9 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { add_list } from "../redux/action/listAction";
+import { add_list } from "../../redux/action/listAction";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 class Add extends React.Component {
   constructor(props) {

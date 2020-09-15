@@ -11,6 +11,8 @@ const pages = [
   ["/list", <Pages.List />],
   ["/login", <Pages.Login />],
   ["/register", <Pages.Register />],
+  ["/list-albums", <Pages.ListAlbums />],
+  ["/list-photos", <Pages.ListPhotos />],
 ];
 
 function App() {

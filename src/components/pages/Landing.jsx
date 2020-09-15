@@ -3,7 +3,15 @@ import { Button } from "@material-ui/core";
 import moduleName from "./";
 import Pages from "./index";
 import { withRouter } from "react-router-dom";
-const pages = ["/", "/add", "/list", "/login", "/register"];
+const pages = [
+  "/",
+  "/add",
+  "/list",
+  "/login",
+  "/register",
+  "/list-albums",
+  "/list-photos",
+];
 export class Landing extends Component {
   _navigate = (dest) => {
     console.log("props", dest);

@@ -10,10 +10,10 @@ import {
 } from "@material-ui/core";
 import FolderIcon from "@material-ui/icons/Folder";
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
-import { RequesGet } from "../../../config/api/request";
-import url from "../../../config/api/url";
+import { get_post } from "../../../redux/action/postAction";
 
 export class ListAlbums extends Component {
   constructor(props) {
@@ -23,13 +23,15 @@ export class ListAlbums extends Component {
     };
   }
   async componentDidMount() {
-    RequesGet(url.posts, {
-      //   postId: 1,
-    }).then((res) => {
-      this.setState({
-        data: res,
-      });
-    });
+    console.log("apa props", this.props);
+    this.props.get_post();
+    // RequesGet(url.posts, {
+    //   // postId: 1,
+    // }).then((res) => {
+    //   this.setState({
+    //     data: res,
+    //   });
+    // });
   }
 
   _navigate = (postId) => {
@@ -39,8 +41,8 @@ export class ListAlbums extends Component {
 
   render() {
     const { data } = this.state;
-    const { classes } = this.props;
-    console.log("res", data);
+    const { classes, post } = this.props;
+    console.log("res album", this.props);
     return (
       <div>
         <Grid container spacing={2}>
@@ -50,18 +52,19 @@ export class ListAlbums extends Component {
             </Typography>
             <div className={classes.demo}>
               <List>
-                {data.map((el, id) => (
-                  <a key={id} onClick={() => this._navigate(el.id)}>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar>
-                          <FolderIcon />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText primary={el.title} secondary={el.body} />
-                    </ListItem>
-                  </a>
-                ))}
+                {post.length > 0 &&
+                  post.map((el, id) => (
+                    <a key={id} onClick={() => this._navigate(el.id)}>
+                      <ListItem>
+                        <ListItemAvatar>
+                          <Avatar>
+                            <FolderIcon />
+                          </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary={el.title} secondary={el.body} />
+                      </ListItem>
+                    </a>
+                  ))}
               </List>
             </div>
           </Grid>
@@ -84,4 +87,15 @@ const styles = {
   },
 };
 
-export default compose(withStyles(styles), withRouter)(ListAlbums);
+const mapState = ({ postReducer }) => ({
+  post: postReducer.post,
+});
+const mapDispatch = {
+  get_post,
+};
+
+export default compose(
+  withStyles(styles),
+  withRouter,
+  connect(mapState, mapDispatch)
+)(ListAlbums);

@@ -36,6 +36,7 @@ export class ListPhotos extends Component {
     // console.log("props", this.props.history.location.state);
     RequesGet(url.comments, {
       postId,
+      _limit: 2,
     }).then((res) => this.setState({ comments: res }));
   };
 

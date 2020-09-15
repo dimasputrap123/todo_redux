@@ -1,6 +1,11 @@
 import axios from "axios";
 import { baseUrl } from "./url";
 
+/**
+ *
+ * @param {string} _url api
+ * @param {object} data params
+ */
 export const RequesGet = async (_url, data) => {
   if (data) {
     _url += "?";
@@ -11,6 +16,7 @@ export const RequesGet = async (_url, data) => {
         _url += "&";
       }
     });
+    console.log("_url", baseUrl + _url, data);
 
     return axios({
       url: baseUrl + _url,

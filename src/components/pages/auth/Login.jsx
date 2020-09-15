@@ -1,6 +1,9 @@
+import { Button } from "@material-ui/core";
+import Axios from "axios";
 import React, { Component } from "react";
-import { TextField, Button } from "@material-ui/core";
 import FieldText from "../../atoms/Input/FieldText/FieldText";
+import TempLogin from "../../templates/Desktop/TempLogin";
+import "./styles.css";
 
 export class Login extends Component {
   constructor(props) {
@@ -39,15 +42,51 @@ export class Login extends Component {
 
   _handleSubmit = (event) => {
     event.preventDefault();
+    const url = "https://staging.syailendra.id/apiv2/auth-login";
     console.log("state", this.state.value);
+    const { username, password } = this.state.value;
+
+    let formData = new FormData();
+    formData.append("identity", username);
+    formData.append("password", password);
+
+    // fetch(url, { method: "post", headers: {}, body: formData })
+    //   .then((res) => {
+    //     console.log("res", res);
+    //     return res.json();
+    //   })
+    //   .then((e) => {
+    //     console.log("ress", e);
+    //   });
+
+    let json = Axios({
+      method: "post",
+      data: formData,
+      url: url,
+    }).then((res) => {
+      console.log("res", res);
+      return res.data;
+    });
+
+    this.setState({
+      result: json,
+    });
+
+    // fetch(ktp_url, {
+    //   headers: {Authorization: token.toString()},
+    // })
+    //   .then(r => r.blob())
+    //   .then(d => {
+    //     this.setState({
+    //       imageWeb: URL.createObjectURL(d),
+    //     });
+    //   })
   };
 
   render() {
     const { value, form } = this.state;
-    const { username, password } = value;
-
     return (
-      <div>
+      <TempLogin>
         <p>Ini halaman login</p>
         <form onSubmit={this._handleSubmit}>
           {form.map((el, idx) => (
@@ -59,10 +98,10 @@ export class Login extends Component {
             />
           ))}
           <Button variant="contained" color="primary" type="submit">
-            MASUK
+            LOGIN
           </Button>
         </form>
-      </div>
+      </TempLogin>
     );
   }
 }

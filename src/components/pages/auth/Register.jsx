@@ -1,19 +1,29 @@
 import React, { Component } from "react";
 import { Formik, Form, Field } from "formik";
 import FieldText from "../../atoms/Input/FieldText/FieldText";
-import { Button, Grid } from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@material-ui/core";
 import * as Yup from "yup";
+import "./styles.css";
 
 const validation = Yup.object().shape({
   email: Yup.string().email("Format email salah").required("Email harus diisi"),
   username: Yup.string().required("Username harus diisi"),
   password: Yup.string().required("Password harus diisi"),
+  jenis_kelamin: Yup.string().required("Jenis kelamin harus diisi"),
 });
 
 export class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      img: "",
       form: [
         {
           name: "email",
@@ -31,17 +41,30 @@ export class Register extends Component {
     };
   }
 
+  _handleChange = (data) => {
+    console.log("data", data);
+  };
+
+  onChangeHandler = (event) => {
+    console.log(event.target.files[0]);
+    this.setState({
+      img: URL.createObjectURL(event.target.files[0]),
+    });
+  };
+
   render() {
-    const { form } = this.state;
+    const { form, img } = this.state;
     return (
       <div>
         <h1>Sign Up</h1>
         <Formik
           validationSchema={validation}
+          enableReinitialize={false}
           initialValues={{
             email: "",
             username: "",
             password: "",
+            jenis_kelamin: "",
           }}
           onSubmit={(values) => {
             console.log("submit", values);
@@ -90,8 +113,8 @@ export class Register extends Component {
                       label={"Email"}
                     />
                   </Grid>
-                  <Grid xs={8} item>
-                    <FieldText
+                  <Grid xs={6} item>
+                    {/* <FieldText
                       key={"password"}
                       handleChange={handleChange}
                       value={values["password"]}
@@ -99,7 +122,32 @@ export class Register extends Component {
                       onFocus={() => setFieldTouched("password")}
                       name={"password"}
                       label={"Password"}
+                    /> */}
+                    <input
+                      type="file"
+                      name="file"
+                      onChange={this.onChangeHandler}
                     />
+                  </Grid>
+                  <Grid xs={4} item>
+                    <FormControl className={"cont_gender"}>
+                      <InputLabel id="demo-simple-select-label">
+                        Jenis kelamin
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-outlined-label"
+                        name={"jenis_kelamin"}
+                        value={values["jenis_kelamin"]}
+                        onChange={handleChange}
+                        label="Jenis Kelamin"
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={"man"}>Laki-laki</MenuItem>
+                        <MenuItem value={"woman"}>Perempuan</MenuItem>
+                      </Select>
+                    </FormControl>
                   </Grid>
                 </Grid>
                 <Button
@@ -114,6 +162,9 @@ export class Register extends Component {
             );
           }}
         </Formik>
+        <div>
+          <img src={img} />
+        </div>
       </div>
     );
   }
